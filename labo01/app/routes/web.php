@@ -13,6 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
+});*/
+
+Route::get('/', function () {
+    return redirect('/concerts');
+});
+
+Route::get('/concerts', function () {
+    return view('index-start');
+});
+
+/*Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+    return 'Post ' . $postId;
+});*/
+
+Route::get('concerts?search={term}', function($term) {
+    //kutnaam($term);
+    return redirect(`search/{$term}`);
+});
+
+Route::get('search/{term}' , function ($term){
+    view('index-start', ['name' => $term]);
 });
