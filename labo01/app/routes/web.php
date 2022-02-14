@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConcertController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,23 +18,22 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
-Route::get('/', function () {
-    return redirect('/concerts');
-});
+Route::get('/', [ConcertController::class, 'home']);
 
-Route::get('/concerts', function () {
-    return view('index-start');
-});
+Route::get('/concerts', [ConcertController::class, 'overview']);
 
 /*Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
     return 'Post ' . $postId;
 });*/
 
-Route::get('concerts?search={term}', function($term) {
-    //kutnaam($term);
-    return redirect(`search/{$term}`);
-});
+//Route::get('/concerts?search={term}', [ConcertController::class, 'search']);
 
-Route::get('search/{term}' , function ($term){
-    view('index-start', ['name' => $term]);
-});
+Route::get('/search/{term?}', [ConcertController::class, 'search']);
+
+Route::post('/concerts/{id}/toggle', [ConcertController::class, 'changeLike'])->where(['id' => '[0-9]+']);
+
+Route::get('/concerts/{id}', [ConcertController::class, 'concert'])->where(['id' => '[0-9]+']);
+
+Route::get('/concerts/{id}/images/{imgId}', [ConcertController::class, 'images'])->where(['id' => '[0-9]+', 'imgId' => '[0-9]+']);
+
+Route::any('{catchall}', [ConcertController::class, 'notfound'])->where('catchall', '.*');

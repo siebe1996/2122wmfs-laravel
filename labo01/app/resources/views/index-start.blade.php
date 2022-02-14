@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="{{asset('css/main.css')}}" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 	</head>
 	<body id="top">
@@ -22,7 +22,7 @@
 						<header class="major">
 							<h2>Overzicht concerten</h2>
 						</header>
-						<form method="get" action="index.php">
+						<form method="get" action="{{ url('concerts') }}">
 							<div class="row uniform 50%">
 								<div class="6u 12u$(xsmall)"></div>
 								<div class="3u 12u$(xsmall)">
@@ -34,6 +34,7 @@
 							</div>
 						</form>
 						<div class="table-wrapper">
+                            @if($concerts)
 							<table>
 								<thead>
 									<tr>
@@ -43,30 +44,25 @@
 									</tr>
 								</thead>
 								<tbody>
+                                @foreach($concerts as $concert)
 									<tr>
-										<td>21 jul 2017 - 10u00</td>
-										<td>Tomorrowland (De Schorre, Boom)<br/>
-											<form method="post" action="index.php" style="margin: 0">
-												<input type="hidden" name="event_id" value="1" />
+										<td>{{ $concert->start_date }}</td>
+										<td>{{ $concert->title }} ({{ $concert->location }})<br/>
+											<form method="post" action="{{ url('concerts/'.$concert->id.'/toggle') }}" style="margin: 0">
+                                                @csrf
+                                                <input type="hidden" name="event_id" value="{{ $concert->id }}" />
 												<input type="hidden" name="moduleAction" value="switch" />
 												<input type="submit" value="voeg toe aan favorieten" class="small" style="line-height:0em; height: 2em"/>
 											</form>
 										</td>
-										<td>281,00 &euro;</td>
+										<td>{{ $concert->price }} &euro;</td>
 									</tr>
-									<tr>
-										<td>10 apr 2018 - 15u00</td>
-										<td>Finale HUMO&#039;s Rock Rally (AB, Brussel)<br/>
-											<form method="post" action="index.php" style="margin: 0">
-												<input type="hidden" name="event_id" value="2" />
-												<input type="hidden" name="moduleAction" value="switch" />
-												<input type="submit" value="voeg toe aan favorieten" class="small" style="line-height:0em; height: 2em"/>
-											</form>
-										</td>
-										<td>14,00 &euro;</td>
-									</tr>
+                                @endforeach
 								</tbody>
 							</table>
+                            @else
+                            <p>no concerts available</p>
+                            @endif
 						</div>
 					</section>
 			</div>
