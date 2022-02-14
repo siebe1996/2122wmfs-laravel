@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Concertagenda - Tomorrowland</title>
+    <title>Concertagenda - {{ $concert[0]->title }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!--[if lte IE 8]><script src="js/ie/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" href="css/main.css" />
-    <!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
+    <!--[if lte IE 8]<script src="asset('js/ie/html5shiv.js'}}"></script><![endif]-->
+    <link rel="stylesheet" href="{{asset('css/main.css')}}" />
+    <!--[if lte IE 8]<link rel="stylesheet" href="asset('css/ie8.css')}}" /><![endif]-->
 </head>
 <body id="top">
 
@@ -20,23 +20,23 @@
     <!-- Event table -->
     <section id="concert">
         <header class="major">
-            <h2>Tomorrowland</h2>
+            <h2>{{ $concert[0]->title }}</h2>
         </header>
         <div class="table-wrapper">
             <table>
                 <tbody>
                 <tr>
                     <th>Datum</th>
-                    <td>21 jul 2017 - 10u00</td>
+                    <td>{{ $concert[0]->start_date }}</td>
                 </tr>
                 <tr>
                     <th>Locatie</th>
-                    <td>De Schorre, Boom</td>
+                    <td>{{ $concert[0]->location }}</td>
                 </tr>
                 <tr>
                     <th>Prijs</th>
                     <td>
-                        281,00 &euro;
+                        {{ $concert[0]->price }} &euro;
                     </td>
                 </tr>
                 </tbody>
@@ -67,12 +67,12 @@
 </footer>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.poptrox.min.js"></script>
-<script src="assets/js/skel.min.js"></script>
-<script src="assets/js/util.js"></script>
-<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-<script src="assets/js/main.js"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{asset('js/jquery.poptrox.min.js')}}"></script>
+<script src="{{asset('js/skel.min.js')}}"></script>
+<script src="{{asset('js/util.js')}}"></script>
+<!--[if lte IE 8]<script src="asset('js/ie/respond.min.js')}}"></script><![endif]-->
+<script src="{{asset('js/main.js')}}"></script>
 
 </body>
 </html>
