@@ -15,7 +15,7 @@ class FiddleController extends Controller{
 
     public function one(){
         $countPosts = Blogpost::count();
-        $countFeaturedPosts = Blogpost::where('featured', '=', true) -> count();
+        $countFeaturedPosts = Blogpost::where('featured', '=', 1) -> count();
         $countComment = Comment::count();
 
         dump($countPosts);
@@ -64,18 +64,19 @@ class FiddleController extends Controller{
     }
 
     public function eight(){
-        //$commentJoris = Author::where('first_name', 'like', 'Joris')->comments()->get();
+        $commentJoris = Author::where('first_name', 'like', 'Joris')->first()->comments()->get();
         /*
         $authorId = Author::where('first_name', 'like', 'Joris')->value('id');
         $commentJoris = Comment::where('id', $authorId)->get();
         */
-
-        $comments = Author::where('first_name', 'Joris')
+        /*
+        $commentJoris = Author::where('first_name', 'Joris')
             ->join('comments', 'authors.id', '=', 'comments.author_id')
             ->select('comments.*')
             ->get();
+        */
 
-        dump($comments);
+        dump($commentJoris);
     }
 
     public function nine(){
