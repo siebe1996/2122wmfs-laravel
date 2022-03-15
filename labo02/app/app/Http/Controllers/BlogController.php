@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Blogpost;
+use App\Models\Blogpost_Tag;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Tag;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +37,7 @@ class BlogController extends Controller{
         $categories = Category::all();
         $authors = Author::all();
         //dd($categories);
-        return view('add', ['recentBlogposts' => $recentBlogposts, 'categories' => $categories, 'authors' => $authors]);
+        return view('add-with-tags', ['recentBlogposts' => $recentBlogposts, 'categories' => $categories, 'authors' => $authors]);
     }
 
     public function category(String $category){
@@ -87,6 +89,18 @@ class BlogController extends Controller{
         if ($request->featured == null){
             $request['featured'] = '0';
         }
+        if ($request->tags !== null){
+            $requestTagArray = explode(" ",strtolower($request->tags));
+            $databaseTagArray = Tag::pluck('title')->toArray();
+            foreach ($requestTagArray as $requestTag){
+                if(!in_array($requestTag, $databaseTagArray)){
+                    $tag = new Tag;
+                    $tag->title = $requestTag;
+                    $tag->save();
+                }
+            }
+            $tagIds = Tag::whereIn('title',$requestTagArray)->pluck('id')->toArray();
+        }
         $author = Author::findOrFail($request->author_id);
         $category = Category::findOrFail($request->category_id);
         $blogpost = new Blogpost;
@@ -97,6 +111,10 @@ class BlogController extends Controller{
         $blogpost->category()->associate($category);
         $blogpost->author()->associate($author);
         $blogpost->save();
+        if ($request->tags !== null){
+            $blogpost->tags()->attach($tagIds);
+            //dd($tagIds);
+        }
         return redirect('/');
     }
 
