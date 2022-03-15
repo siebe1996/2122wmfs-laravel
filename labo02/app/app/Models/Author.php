@@ -19,4 +19,8 @@ class Author extends Model
     public function comments(){
         return $this->hasMany(Comment::class);
     }
+
+    public function getFullNameAttribute(){
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
