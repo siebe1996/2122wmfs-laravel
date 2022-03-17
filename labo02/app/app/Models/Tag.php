@@ -10,9 +10,13 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
-    protected $hidden = ['id'];
+    //protected $hidden = ['id'];
 
     public function blogposts(){
         return $this->belongsToMany(Blogpost::class);
+    }
+
+    public function setTitleAttribute($value) {
+        $this->attributes['title'] = strtolower($value);
     }
 }

@@ -10,12 +10,12 @@
                 @foreach($categoryBlogposts as $categoryBlogpost)
                 <article class="blog-post">
                     <h2 class="blog-post-title">{{ $categoryBlogpost->title }}</h2>
-                    <p class="blog-post-meta">{{ $categoryBlogpost->created_at }} by <a href="{{ url('author/'.$categoryBlogpost->author->id) }}">{{ $categoryBlogpost->author->full_name }}</a></p>
+                    <p class="blog-post-meta">{{ $categoryBlogpost->created_at }} by <a href="{{ url('authors/'.$categoryBlogpost->author->id) }}">{{ $categoryBlogpost->author->full_name }}</a></p>
                     <p><img src="{{ asset('storage/'.$categoryBlogpost->image) }}" class="rounded"
                             alt="{{ $categoryBlogpost->title }}">
                     </p>
                     <p>{{ $categoryBlogpost->content }}</p>
-                    <a href="{{ url('blogpost/'.$categoryBlogpost->id) }}">Read comments &hellip;</a>
+                    <a href="{{ url('blogposts/'.$categoryBlogpost->id) }}">Read comments &hellip;</a>
                 </article>
                 @endforeach
             </div>

@@ -10,7 +10,7 @@ class Blogpost extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'content', 'image', 'featured', 'updated_at'];
-    protected $hidden = ['id', 'author_id', 'category_id', 'created_at'];
+    //protected $hidden = ['id', 'author_id', 'category_id', 'created_at'];
     protected $attributes = ['featured' => 0];
 
     public function author(){

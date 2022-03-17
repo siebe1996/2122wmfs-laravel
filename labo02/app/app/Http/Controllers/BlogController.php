@@ -74,6 +74,85 @@ class BlogController extends Controller{
         return view('author', ['authorBlogposts' => $authorBlogposts, 'author' => $author, 'recentBlogposts' => $recentBlogposts, 'categories' => $categories]);
     }
 
+    public function search(Request $request){
+
+        $callback = function ($query) use ($request){
+            $query->where('tags.title', 'like', "%{$request->tags}%");
+        };
+
+        DB::enableQueryLog();
+        dump($request);
+        $categories = Category::all();
+        $authors = Author::all();
+        $blogposts = Blogpost::query();
+        $blogposts->with('category');
+        $blogposts->when($request->filled('term'), function ($query) use ($request){
+            $requestTermArray = explode(" ",strtolower($request->term));
+            foreach ($requestTermArray as $requestTerm){
+                $query->where('blogposts.title', 'like', "%{$requestTerm}%");
+            }
+            return $query;
+        });
+        /*
+        $blogposts->when($request->filled('tags'), function ($query) use ($request, $callback){
+            $query->whereHas('tags', $callback)->with(['tags'=>$callback]);
+        });*/
+        $blogposts->when($request->filled('tags'), function ($query) use ($request){
+            $requestTagsArray = explode(" ",strtolower($request->tags));
+            $requestTagsItem = $requestTagsArray[0];
+            $query->whereHas('tags', function ($query) use ($requestTagsItem){
+                $query->where('tags.title', 'like', "%{$requestTagsItem}%");
+            })->with(['tags'=> function ($query) use ($requestTagsItem) {
+                $query->where('tags.title', 'like', "%{$requestTagsItem}%");
+            }]);
+            if (sizeof($requestTagsArray) > 1){
+                for($i = 1; $i < sizeof($requestTagsArray); $i++){
+                    $requestTagsItem = $requestTagsArray[$i];
+                    $query->orWhereHas('tags', function ($query) use ($requestTagsItem){
+                        $query->where('tags.title', 'like', "%{$requestTagsItem}%");
+                    })->with(['tags'=> function ($query) use ($requestTagsItem) {
+                        $query->where('tags.title', 'like', "%{$requestTagsItem}%");
+                    }]);
+                }
+            }
+            return $query;
+        });
+        $blogposts->when($request->filled('category_id'), function ($query) use ($request){
+            return $query->where('blogposts.category_id', $request->category_id);
+        });
+        $blogposts->when($request->filled('author_id'), function ($query) use ($request){
+            return $query->where('blogposts.author_id', $request->author_id);
+        });
+        if ($request->filled('after')||$request->filled('before')){
+            if ($request->filled('after') && $request->filled('before')){
+                $blogposts->whereBetween('blogposts.created_at', [$request->after, $request->before]);
+            }
+            elseif ($request->filled('after')){
+                $blogposts->where('blogposts.created_at', '>', $request->after);
+            }
+            else{
+                $blogposts->where('blogposts.created_at', '<', $request->before);
+            }
+        }
+        $blogposts->when($request->filled('sort'), function ($query) use ($request){
+            if($request->sort === 'most_recent'){
+                return $query->orderBy('blogposts.created_at', 'DESC');
+            }
+            elseif($request->sort === 'less_recent'){
+                return $query->orderBy('blogposts.created_at', 'ASC');
+            }
+            else{
+                return $query->orderBy('blogposts.title');
+            }
+        });
+        $blogposts = $blogposts->paginate(15)->withQueryString();
+        dump(DB::getQueryLog());
+        dump($blogposts);
+        dump(session());
+        $sortArray = ['most_recent' => 'most recent', 'less_recent' => 'less recent', 'title' => 'title'];
+        return view('search', ['categories' => $categories, 'authors' => $authors, 'blogposts' => $blogposts, 'sortArray' => $sortArray]);
+    }
+
     public function store(Request $request){
         $request->validate([
             'title' => 'required|unique:blogposts|max:125',
@@ -115,7 +194,7 @@ class BlogController extends Controller{
             $blogpost->tags()->attach($tagIds);
             //dd($tagIds);
         }
-        return redirect('/');
+        return redirect('blogposts/'.$blogpost->id);
     }
 
 }

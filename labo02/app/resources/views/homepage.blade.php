@@ -8,7 +8,7 @@
             <div class="col-md-6 px-0">
                 <h1 class="display-4 fst-italic">{{ $featuredBlogposts[0]->title }}</h1>
                 <p class="lead my-3">{{ $featuredBlogposts[0]->content }}</p>
-                <p class="lead mb-0"><a href="{{ url('blogpost/'.$featuredBlogposts[0]->id) }}" class="text-white fw-bold">Continue reading...</a></p>
+                <p class="lead mb-0"><a href="{{ url('blogposts/'.$featuredBlogposts[0]->id) }}" class="text-white fw-bold">Continue reading...</a></p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
                         <h3 class="mb-0">{{ $featuredBlogposts[$i]->title }}</h3>
                         <div class="mb-1 text-muted">{{ $featuredBlogposts[$i]->created_at }}</div>
                         <p class="card-text mb-auto">{{ $featuredBlogposts[$i]->content }}</p>
-                        <a href="{{ url('blogpost/'.$featuredBlogposts[$i]->id) }}" class="stretched-link">Continue reading</a>
+                        <a href="{{ url('blogposts/'.$featuredBlogposts[$i]->id) }}" class="stretched-link">Continue reading</a>
                     </div>
                     <div class="col-auto d-none d-lg-block img-container">
                         <img src="{{ asset('storage/'.$featuredBlogposts[$i]->image) }}"

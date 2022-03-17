@@ -32,9 +32,11 @@ Route::get('fiddleten', [FiddleController::class, 'ten']);
 Route::get('fiddleeleven', [FiddleController::class, 'eleven']);
 
 Route::get('/', [BlogController::class,'home']);
-Route::get('add', [BlogController::class,'add']);
-Route::get('category/{category}', [BlogController::class,'category']);
-Route::get('blogpost/{id}', [BlogController::class, 'blogpost'])->where(['id' => '[0-9]+']);
-Route::get('author/{id}', [BlogController::class, 'author'])->where(['id' => '[0-9]+']);
+Route::get('blogposts/{id}', [BlogController::class, 'blogpost'])->where(['id' => '[0-9]+']);
+Route::get('blogposts/add', [BlogController::class,'add']);
+Route::get('blogposts/search', [BlogController::class, 'search']);
+Route::get('categories/{category}', [BlogController::class,'category']);
+Route::get('authors/{id}', [BlogController::class, 'author'])->where(['id' => '[0-9]+']);
 
-Route::post('add', [BlogController::class,'store']);
+Route::post('blogposts/add', [BlogController::class,'store']);
+Route::post('blogposts/search', [BlogController::class, 'searchThis']);

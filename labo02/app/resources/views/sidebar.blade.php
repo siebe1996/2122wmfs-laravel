@@ -9,7 +9,7 @@
             <h4 class="fst-italic">Most recent</h4>
             <ol class="list-unstyled mb-0">
                 @foreach($recentBlogposts as $recentBlogpost)
-                <li><a href="{{ url('blogpost/'.$recentBlogpost->id) }}" >{{ $recentBlogpost->title }}</a></li>
+                <li><a href="{{ url('blogposts/'.$recentBlogpost->id) }}" >{{ $recentBlogpost->title }}</a></li>
                 @endforeach
             </ol>
         </div>

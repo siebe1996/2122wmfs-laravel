@@ -20,7 +20,7 @@
                         {{ dump(session()->get('_old_input.title')) }}
                         {{ dd(session() -> all()) }}
                     @endif--}}
-                    <form class="needs-validation" novalidate="" method="post" action="{{ url('add') }}"
+                    <form class="needs-validation" novalidate="" method="post" action="{{ url('blogposts/add') }}"
                           enctype="multipart/form-data">
                     @csrf
                     <!--<input type="hidden" name="_token" value="xbleOu1XHjw4MyI2FeAg5VzncRFBmSWuSE9dJk9D">-->
@@ -99,10 +99,10 @@
                                     @foreach($authors as $choseAuthor)
                                         @if(old('author_id') == $choseAuthor->id)
                                             <option value="{{ $choseAuthor->id }}"
-                                                    selected>{{ $choseAuthor->first_name.' '.$choseAuthor->last_name }}</option>
+                                                    selected>{{ $choseAuthor->full_name }}</option>
                                         @else
                                             <option
-                                                value="{{ $choseAuthor->id }}">{{ $choseAuthor->first_name.' '.$choseAuthor->last_name }}</option>
+                                                value="{{ $choseAuthor->id }}">{{ $choseAuthor->full_name }}</option>
                                         @endif
                                     @endforeach
                                 </select>

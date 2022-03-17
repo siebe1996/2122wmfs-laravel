@@ -10,7 +10,7 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = ['content', 'blogpost_id', 'author_id', 'updated_at'];
-    protected $hidden = ['id', 'created_at'];
+    //protected $hidden = ['id', 'created_at'];
 
     public function blogpost(){
         return $this->belongsTo(Blogpost::class);

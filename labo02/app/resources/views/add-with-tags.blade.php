@@ -20,7 +20,7 @@
                         {{ dump(session()->get('_old_input.title')) }}
                         {{ dd(session() -> all()) }}
                     @endif--}}
-                    <form class="needs-validation" novalidate="" method="post" action="{{ url('add') }}"
+                    <form class="needs-validation" novalidate="" method="post" action="{{ url('blogposts/add') }}"
                           enctype="multipart/form-data">
                     @csrf
                     <!--<input type="hidden" name="_token" value="xbleOu1XHjw4MyI2FeAg5VzncRFBmSWuSE9dJk9D">-->
@@ -81,7 +81,7 @@
                                 <select class="form-select {{ session()->exists('_old_input.category_id') ? (in_array('category_id', $errorArray) ? 'is-invalid' : 'is-valid')  : '' }}" id="category" required="" name="category_id">
                                     <option value="">Choose...</option>
                                     @foreach($categories as $choseCategory)
-                                        @if (old('category_id') == $choseCategory->id)
+                                        @if (intval(old('category_id')) === $choseCategory->id)
                                             <option value="{{ $choseCategory->id }}"
                                                     selected>{{ $choseCategory->title }}</option>
                                         @else
@@ -97,12 +97,12 @@
                                 <select class="form-select {{ session()->exists('_old_input.author_id') ? (in_array('author_id', $errorArray) ? 'is-invalid' : 'is-valid')  : '' }}" id="author" required="" name="author_id">
                                     <option value="">Choose...</option>
                                     @foreach($authors as $choseAuthor)
-                                        @if(old('author_id') == $choseAuthor->id)
+                                        @if(intval(old('author_id')) === $choseAuthor->id)
                                             <option value="{{ $choseAuthor->id }}"
-                                                    selected>{{ $choseAuthor->first_name.' '.$choseAuthor->last_name }}</option>
+                                                    selected>{{ $choseAuthor->full_name }}</option>
                                         @else
                                             <option
-                                                value="{{ $choseAuthor->id }}">{{ $choseAuthor->first_name.' '.$choseAuthor->last_name }}</option>
+                                                value="{{ $choseAuthor->id }}">{{ $choseAuthor->full_name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
