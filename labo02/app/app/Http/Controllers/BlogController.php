@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Blogpost;
-use App\Models\Blogpost_Tag;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Tag;
