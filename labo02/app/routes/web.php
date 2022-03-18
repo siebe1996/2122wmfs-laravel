@@ -30,6 +30,7 @@ Route::get('fiddleeight', [FiddleController::class, 'eight']);
 Route::get('fiddlenine', [FiddleController::class, 'nine']);
 Route::get('fiddleten', [FiddleController::class, 'ten']);
 Route::get('fiddleeleven', [FiddleController::class, 'eleven']);
+Route::get('test/{id}', [FiddleController::class, 'test']);
 
 Route::get('/', [BlogController::class,'home']);
 Route::get('blogposts/{id}', [BlogController::class, 'blogpost'])->where(['id' => '[0-9]+']);

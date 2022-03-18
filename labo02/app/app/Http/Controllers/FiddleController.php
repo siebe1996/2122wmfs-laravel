@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Blogpost;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Tag;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,6 +101,25 @@ class FiddleController extends Controller{
         $comment->blogpost()->associate($blogpost);
         $comment->author()->associate($author);
         $comment->save();
+    }
+
+    public function test($id){
+        DB::enableQueryLog();
+        $callback = function ($query) use ($id){
+            $query->where('blogpost_id', '=', $id);
+        };
+        $tags = Tag::query();
+        $tags->whereHas('blogposts',$callback)->with(['blogposts'=>$callback]);
+        $tags = $tags->pluck('tags.id')->all();
+        dump($tags);
+        $blogpost = Blogpost::with('tags')->findOrFail($id);
+        for($i = 0; $i<sizeof($tags); $i++){
+            $blogpost->tags()->detach($tags[$i]);
+        }
+        $blogpost->destroy($id);
+        dump($blogpost);
+        dump(DB::getQueryLog());
+        dd('test');
     }
 
 }

@@ -28,12 +28,12 @@ class BlogpostResource extends JsonResource
             'content' => $this->content,
             'image' => $this->image,
             'featured' => $this->featured,
-            'category' => new CategoryResource($this -> category),
-            'author' => new AuthorResource($this -> author),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'author' => new AuthorResource($this->whenLoaded('author')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'comments' => new CommentCollection($this->comments),
-            'tags' => new TagCollection($this->tags)
+            'comments' => new CommentCollection($this->whenLoaded('comments')),
+            'tags' => new TagCollection($this->whenLoaded('tags'))
         ];
     }
 }

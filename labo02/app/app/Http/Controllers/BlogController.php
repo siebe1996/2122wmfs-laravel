@@ -79,8 +79,8 @@ class BlogController extends Controller{
             $query->where('tags.title', 'like', "%{$request->tags}%");
         };
 
-        DB::enableQueryLog();
-        dump($request);
+        //DB::enableQueryLog();
+        //dump($request);
         $categories = Category::all();
         $authors = Author::all();
         $blogposts = Blogpost::query();
@@ -145,9 +145,9 @@ class BlogController extends Controller{
             }
         });
         $blogposts = $blogposts->paginate(15)->withQueryString();
-        dump(DB::getQueryLog());
-        dump($blogposts);
-        dump(session());
+        //dump(DB::getQueryLog());
+        //dump($blogposts);
+        //dump(session());
         $sortArray = ['most_recent' => 'most recent', 'less_recent' => 'less recent', 'title' => 'title'];
         return view('search', ['categories' => $categories, 'authors' => $authors, 'blogposts' => $blogposts, 'sortArray' => $sortArray]);
     }
@@ -160,6 +160,7 @@ class BlogController extends Controller{
             'author_id' => 'required',
             'image' => 'image|mimes:jpeg,png|required'
         ]);
+        //dd($request);
         $path = '';
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public');

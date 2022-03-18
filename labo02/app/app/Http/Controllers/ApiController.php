@@ -16,7 +16,8 @@ use Illuminate\Routing\Controller as BaseController;
 class ApiController extends Controller
 {
     public function blogposts(){
-        return new BlogpostCollection(Blogpost::all());
+        $blogposts = new BlogpostCollection(Blogpost::with('category','author','tags')->get());
+        return ['data' => $blogposts];
     }
 
     public function singleBlogpost($id){
